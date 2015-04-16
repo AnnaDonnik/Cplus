@@ -17,28 +17,65 @@ public:
 	int seconds;
 
 //function that returns the current time
-int  time_present(){
+void time_present(){
 time_t time_present ;
 struct tm * timeinfo;
 time(& time_present);
 timeinfo = localtime(&time_present);
-int hours = timeinfo -> tm_hour;
-int minutes = timeinfo -> tm_min;
-int seconds = timeinfo -> tm_sec;
+hours = timeinfo -> tm_hour;
+minutes = timeinfo -> tm_min;
+seconds = timeinfo -> tm_sec;
 
 cout<<setw(2)<< setfill('0') <<  hours << ":" << setw(2) << setfill('0') << minutes << ":" << setw(2) << setfill('0') << seconds << "\n";
 
-int *mas_time = new int[3];
-mas_time[0] = hours;
-mas_time[1] = minutes;
-mas_time[2] = seconds;// {hours, minutes, seconds};
-return *mas_time;
 }
 
-int hours_plus( int h){
 
-cout << setw(2) << setfill('0') << (tima[0] + 4)%24 << ":" << setw(2) << setfill('0') << tima[1] << ":" << setw(2) << setfill('0') << tima[2] << "\n";
+void hours_plus( int h) 
+{
+time_t plus;
+time(&plus);
+hours = localtime(&plus)->tm_hour;
+minutes = localtime(&plus)->tm_min;
+seconds = localtime(&plus)->tm_sec;
 
+cout << setw(2) << setfill('0') << (hours + h)%24 << ":" << setw(2) << setfill('0') << minutes << ":" << setw(2) << setfill('0') << seconds << "\n";
+
+}
+
+void minutes_plus( int h)
+{
+time_t plus;
+time(&plus);
+hours = localtime(&plus)->tm_hour;
+minutes = localtime(&plus)->tm_min;
+seconds = localtime(&plus)->tm_sec;
+
+minutes = minutes +h;
+if (minutes >=60 ){
+	hours = hours + minutes/60;
+	minutes = minutes%60;
+}
+
+cout << setw(2) << setfill('0') << hours << ":" << setw(2) << setfill('0') << minutes << ":" << setw(2) << setfill('0') << seconds << "\n";
+
+}
+
+
+void seconds_plus( int h)
+{
+time_t plus;
+time(&plus);
+hours = localtime(&plus)->tm_hour;
+minutes = localtime(&plus)->tm_min;
+seconds = localtime(&plus)->tm_sec;
+
+seconds = seconds + h;
+hours = (hours + seconds/3600)%24;
+minutes = minutes + (seconds%3600)/60;
+seconds = (seconds + seconds%3600)%60;
+
+cout << setw(2) << setfill('0') << hours << ":" << setw(2) << setfill('0') << minutes << ":" << setw(2) << setfill('0') << seconds << "\n";
 
 }
 
@@ -51,6 +88,15 @@ Time present_time;
 present_time.time_present();
 Time h_plus;
 h_plus.hours_plus(4);
+Time m_plus;
+m_plus.minutes_plus(30);
+Time s_plus;
+s_plus.seconds_plus(3761);
 
 return 0;
+
+
+
+
+
 }
